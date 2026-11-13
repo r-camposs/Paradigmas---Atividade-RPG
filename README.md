@@ -26,7 +26,7 @@ O jogador escolhe um dos três heróis e enfrenta, em sequência, quatro batalha
 
 | Fase | Inimigos | Recompensa |
 |---|---|---|
-| 1. O duelo com Valerian | Valerian | Espada de Ferro |
+| 1. O duelo com Valerian | Valerian| Espada de Ferro |
 | 2. A missão do príncipe Dain | 2 Capangas de Balekin | Armadura de Couro, Poção de Cura |
 | 3. A festa de Balekin | Cavaleiro de Balekin, Guarda de Balekin | 2 Poções de Cura |
 | 4. O confronto com Madoc | Madoc (chefão) | (fim do jogo) |
