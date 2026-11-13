@@ -1,12 +1,40 @@
 # Diagrama de classes
 
-Diagrama UML do estado atual do código (**código final: combatentes, habilidades, itens, combate, interface de console e fluxo do jogo**). É atualizado a cada etapa. O GitHub renderiza o bloco Mermaid abaixo automaticamente.
+O diagrama UML foi dividido em **duas partes** para ficar legível. Clique na imagem para ampliar. Cada parte também existe em SVG (imagem vetorial, que amplia sem perder qualidade): [parte 1](img/diagrama-parte1.svg) e [parte 2](img/diagrama-parte2.svg).
+
+As caixas cinzas, nomeadas como "definida em outra parte", são classes que aparecem completas na outra parte do diagrama.
+
+## Parte 1: modelo do jogo (combatentes, habilidades e itens)
+
+![Diagrama de classes, parte 1: modelo do jogo](img/diagrama-parte1.png)
+
+## Parte 2: combate, fluxo do jogo e interface de console
+
+![Diagrama de classes, parte 2: combate, fluxo do jogo e interface](img/diagrama-parte2.png)
+
+## Legenda
+
+| Símbolo | Significado |
+|---|---|
+| Seta com ponta vazada e linha cheia | Herança (a seta aponta para a classe-pai) |
+| Seta com ponta vazada e linha tracejada | Implementação de interface |
+| Linha com losango preenchido | Composição (o todo é dono da parte) |
+| Linha com losango vazio | Agregação (o todo guarda a parte) |
+| Seta simples com linha cheia | Associação (usa por atributo) |
+| Seta simples com linha tracejada | Dependência (usa em um método) |
+| Nome em itálico | Classe abstrata |
+
+## Versão em texto (Mermaid)
+
+O código abaixo gera os mesmos diagramas no GitHub (o desenho automático é menos organizado que as imagens acima).
+
+<details>
+<summary>Parte 1 em Mermaid</summary>
 
 ```mermaid
 classDiagram
     direction TB
 
-    %% ===== pacote rpg.combatentes =====
     class Combatente {
         <<abstract>>
         -String nome
@@ -25,12 +53,10 @@ classDiagram
         <<abstract>>
         +usarItem(Usavel item) String
         +equipar(Equipavel item) String
-        +getAtaque() int
-        +getDefesa() int
     }
     class Inimigo {
         <<abstract>>
-        +escolherAcao(List~Personagem~ heroisVivos) Acao
+        +escolherAcao(List~Personagem~ herois) Acao
     }
     class Duelista
     class Feiticeira
@@ -46,7 +72,6 @@ classDiagram
     Inimigo <|-- Soldado
     Inimigo <|-- Madoc
 
-    %% ===== pacote rpg.habilidades =====
     class Habilidade {
         <<interface>>
         +getNome() String
@@ -71,9 +96,7 @@ classDiagram
     HabilidadeLimitada <|-- GlamourRestaurador
     HabilidadeLimitada <|-- GolpeFurtivo
     Personagem --> Habilidade : possui 1
-    Habilidade ..> Combatente : age sobre
 
-    %% ===== pacote rpg.itens =====
     class Item {
         <<interface>>
         +getNome() String
@@ -99,15 +122,9 @@ classDiagram
         -String nome
         -String descricao
     }
-    class PocaoDeCura {
-        -int cura
-    }
-    class Arma {
-        -int bonusAtaque
-    }
-    class Armadura {
-        -int bonusDefesa
-    }
+    class PocaoDeCura
+    class Arma
+    class Armadura
     class Inventario {
         +adicionar(Item item) void
         +remover(Item item) boolean
@@ -119,6 +136,9 @@ classDiagram
         +equipar(Equipavel e) Optional~Equipavel~
         +getBonusAtaque() int
         +getBonusDefesa() int
+    }
+    class EstrategiaDeAcao["EstrategiaDeAcao (parte 2)"] {
+        <<interface>>
     }
 
     Item <|-- Usavel
@@ -135,9 +155,22 @@ classDiagram
     Personagem *-- Equipamentos
     Inventario o-- Item : guarda 0..*
     Equipamentos o-- Equipavel : veste 0..*
-    Usavel ..> Combatente : age sobre
+    Inimigo --> EstrategiaDeAcao : usa 1
+```
 
-    %% ===== pacote rpg.combate =====
+</details>
+
+<details>
+<summary>Parte 2 em Mermaid</summary>
+
+```mermaid
+classDiagram
+    direction LR
+
+    class Personagem["Personagem (parte 1)"]
+    class Inimigo["Inimigo (parte 1)"]
+    class Item["Item (parte 1)"]
+
     class Acao {
         <<interface>>
         +executar() String
@@ -162,10 +195,10 @@ classDiagram
         +exibir(String mensagem) void
         +exibirEstado(List~Personagem~ herois, List~Inimigo~ inimigos) void
     }
-    class ResultadoCombate {
-        <<enumeration>>
-        VITORIA
-        DERROTA
+    class DecisoesDaJornada {
+        <<interface>>
+        +escolherHeroi(List~Personagem~ opcoes) Personagem
+        +prepararParaBatalha(Personagem heroi) void
     }
     class Batalha {
         <<interface>>
@@ -175,10 +208,21 @@ classDiagram
         <<interface>>
         +criar(List~Personagem~ herois, List~Inimigo~ inimigos) Batalha
     }
-    class Combate {
-        +executar() ResultadoCombate
-    }
+    class Combate
     class FabricaDeCombate
+    class ResultadoCombate {
+        <<enumeration>>
+        VITORIA
+        DERROTA
+    }
+    class Jogo {
+        +jogar(List~Personagem~ herois, Campanha campanha) void
+    }
+    class Campanha
+    class Fase
+    class FabricaDeHerois
+    class RoteiroDoPrincipeCruel
+    class Console
 
     Acao <|.. AtaqueBasico
     Acao <|.. GolpeBrutal
@@ -198,56 +242,20 @@ classDiagram
     FabricaDeCombate --> SaidaDoJogo
     Combate --> EntradaDoJogador
     Combate --> SaidaDoJogo
-    Combate --> "1..*" Personagem
-    Combate --> "1..*" Inimigo
     Combate ..> Acao : executa
     Combate ..> ResultadoCombate
-
-
-    %% ===== pacotes rpg.jogo e rpg.historia =====
-    class DecisoesDaJornada {
-        <<interface>>
-        +escolherHeroi(List~Personagem~ opcoes) Personagem
-        +prepararParaBatalha(Personagem heroi) void
-    }
-    class Fase {
-        -String titulo
-        -String introducao
-        -String conclusao
-    }
-    class Campanha {
-        -String titulo
-        -String prologo
-        -String finalDeVitoria
-        -String finalDeDerrota
-    }
-    class Jogo {
-        +jogar(List~Personagem~ herois, Campanha campanha) void
-    }
-    class FabricaDeHerois {
-        +criarHerois() List~Personagem~
-    }
-    class RoteiroDoPrincipeCruel {
-        +criarCampanha() Campanha
-    }
-
-    Campanha *-- "1..*" Fase
-    Fase o-- "1..*" Inimigo : enfrenta
-    Fase o-- Item : recompensas 0..*
+    EntradaDoJogador <|.. Console
+    SaidaDoJogo <|.. Console
+    DecisoesDaJornada <|.. Console
     Jogo --> DecisoesDaJornada
     Jogo --> SaidaDoJogo
     Jogo --> FabricaDeBatalha
     Jogo ..> Campanha : conduz
+    Campanha *-- Fase
+    Fase o-- Inimigo : enfrenta 1..*
+    Fase o-- Item : recompensas 0..*
     FabricaDeHerois ..> Personagem : cria
     RoteiroDoPrincipeCruel ..> Campanha : cria
-
-    %% ===== pacote rpg.ui =====
-    class Console {
-        -Scanner teclado
-        -PrintStream tela
-    }
-    EntradaDoJogador <|.. Console
-    SaidaDoJogo <|.. Console
-    DecisoesDaJornada <|.. Console
 ```
 
+</details>
