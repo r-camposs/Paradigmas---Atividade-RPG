@@ -16,7 +16,7 @@ Trabalho prático de **Paradigmas de Programação**: um RPG em modo console, fe
 - [x] Etapa 6: revisão final do código, do UML e do README
 - [x] Capturas de tela e publicação no GitHub
 
-> Um exemplo de execução em texto está em [docs/exemplo-execucao.md](docs/exemplo-execucao.md). As capturas de tela serão adicionadas em `docs/img/`.
+> Um exemplo de execução em texto está em [docs/exemplo-execucao.md](docs/exemplo-execucao.md). As capturas de tela foram adicionadas em `docs/img/`.
 
 ## Como o jogo funciona
 
