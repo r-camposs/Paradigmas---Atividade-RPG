@@ -251,6 +251,3 @@ classDiagram
     DecisoesDaJornada <|.. Console
 ```
 
-## Próximas atualizações
-
-- Opcional: exportar este diagrama como imagem (por exemplo em mermaid.live) e salvar em `docs/img/diagrama-classes.png`.
