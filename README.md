@@ -64,7 +64,7 @@ Cada espaço de equipamento comporta um item: ao equipar outro no mesmo espaço,
 ├── docs/
 │   ├── diagrama-classes.md
 │   ├── exemplo-execucao.md
-│   └── img/                  (capturas de tela e GIFs)
+│   └── img/                  (capturas de tela)
 └── src/
     ├── Main.java
     └── rpg/
