@@ -222,10 +222,6 @@ jogo.jogar(new FabricaDeHerois().criarHerois(),
 - **Polimorfismo:** `falar()`, `usar(...)`, `executar()` e `escolher(...)` têm implementações diferentes em cada classe concreta.
 - **Composição:** `Personagem` é composto por `Inventario` e `Equipamentos`.
 
-## Capturas de tela
-
-⏳ Serão adicionadas em `docs/img/` na etapa final.
-
 ## Referência
 
 BLACK, Holly. *O príncipe cruel*. São Paulo: Galera Record, 2018.
