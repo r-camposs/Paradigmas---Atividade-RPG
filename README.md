@@ -101,7 +101,7 @@ No Windows, se os acentos aparecerem quebrados, rode `chcp 65001` antes de execu
 
 ## Diagrama de classes
 
-O diagrama UML está em [docs/diagrama-classes.md](docs/diagrama-classes.md) e é atualizado a cada etapa.
+O diagrama UML está em [docs/diagrama-classes.md](docs/diagrama-classes.md).
 
 ## Princípios SOLID
 
